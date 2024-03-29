@@ -1,4 +1,4 @@
-const products = [
+export const products = [
   {
     _id: '6372e040f52e37ef85fe2c5e',
     name: 'Pizza quatro queijos',
@@ -9,23 +9,23 @@ const products = [
       {
         name: 'Mussarela',
         icon: '🧀',
-        _id: '6372e040f52e37ef85fe2c5f'
+        _id: '6372e040f52e37ef85fe2c5f',
       },
       {
         name: 'Parmesão',
         icon: '🧀',
-        _id: '6372e040f52e37ef85fe2c60'
+        _id: '6372e040f52e37ef85fe2c60',
       },
       {
         name: 'Gouda',
         icon: '🧀',
-        _id: '6372e040f52e37ef85fe2c61'
+        _id: '6372e040f52e37ef85fe2c61',
       },
       {
         name: 'Brie',
         icon: '🧀',
-        _id: '6372e040f52e37ef85fe2c62'
-      }
+        _id: '6372e040f52e37ef85fe2c62',
+      },
     ],
   },
   {
