@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { CartItem } from '../../types/CartItem';
 import {
@@ -17,19 +17,37 @@ import { formatCurrency } from '../../utils/formatCurrency';
 import { Button } from '../Button';
 import { MinusCircle } from '../Icons/MinusCircle';
 import { PlusCircle } from '../Icons/PlusCircle';
+import { OrderConfirmedModal } from '../OrderConfirmedModal';
 import { Text } from '../Text';
 
 interface CartProps {
   cartItems: CartItem[];
   onAdd: (product: Product) => void;
   onDecrement: (product: Product) => void;
+  onConfirmOrder: () => void;
 }
 
-export function Cart({ cartItems, onAdd, onDecrement }: CartProps) {
+export function Cart({
+  cartItems,
+  onAdd,
+  onDecrement,
+  onConfirmOrder,
+}: CartProps) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const cartHasItems = cartItems.length > 0;
+
+  function handleConfirmOrder() {
+    setIsModalVisible(true);
+  }
+
+  function handleOk() {
+    onConfirmOrder();
+    setIsModalVisible(false);
+  }
 
   return (
     <>
+      <OrderConfirmedModal visible={isModalVisible} onOk={handleOk} />
       {cartHasItems && (
         <FlatList
           data={cartItems}
@@ -96,7 +114,7 @@ export function Cart({ cartItems, onAdd, onDecrement }: CartProps) {
           )}
         </TotalContainer>
 
-        <Button onPress={() => {}} disabled={!cartHasItems}>
+        <Button onPress={handleConfirmOrder} disabled={!cartHasItems}>
           Confirmar pedido
         </Button>
       </Summary>
