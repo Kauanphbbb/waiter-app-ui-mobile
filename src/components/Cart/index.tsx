@@ -13,6 +13,7 @@ import {
 } from './styles';
 
 import { Product } from '../../types/Product';
+import { api } from '../../utils/api';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { Button } from '../Button';
 import { MinusCircle } from '../Icons/MinusCircle';
@@ -25,6 +26,7 @@ interface CartProps {
   onAdd: (product: Product) => void;
   onDecrement: (product: Product) => void;
   onConfirmOrder: () => void;
+  selectedTable: string;
 }
 
 export function Cart({
@@ -32,12 +34,26 @@ export function Cart({
   onAdd,
   onDecrement,
   onConfirmOrder,
+  selectedTable,
 }: CartProps) {
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const cartHasItems = cartItems.length > 0;
 
-  function handleConfirmOrder() {
+  async function handleConfirmOrder() {
+    setIsLoading(true);
+
+    const payload = {
+      table: selectedTable,
+      products: cartItems.map((cartItem) => ({
+        product: cartItem.product._id,
+        quantity: cartItem.quantity,
+      })),
+    };
+
+    await api.post('/orders', payload);
+
+    setIsLoading(false);
     setIsModalVisible(true);
   }
 
@@ -115,7 +131,11 @@ export function Cart({
           )}
         </TotalContainer>
 
-        <Button onPress={handleConfirmOrder} disabled={!cartHasItems} loading={isLoading}>
+        <Button
+          onPress={handleConfirmOrder}
+          disabled={!cartHasItems}
+          loading={isLoading}
+        >
           Confirmar pedido
         </Button>
       </Summary>
